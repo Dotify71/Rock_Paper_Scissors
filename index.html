@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Rock <span class="highlight">Paper</span> Scissors</h1>
+            <p class="subtitle">Choose your move and battle the AI</p>
+        </header>
+
+        <div class="settings-bar">
+            <div class="setting-group">
+                <label for="series-mode">Mode:</label>
+                <select id="series-mode" class="glass-select" onchange="resetGame()">
+                    <option value="infinity">Endless Play</option>
+                    <option value="3">Best of 3</option>
+                    <option value="5">Best of 5</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label for="ai-difficulty">Difficulty:</label>
+                <select id="ai-difficulty" class="glass-select" onchange="resetGame()">
+                    <option value="normal">Normal (Random)</option>
+                    <option value="hard">Hard (Smart AI)</option>
+                </select>
+            </div>
+            <button class="btn-reset" onclick="resetGame()" aria-label="Reset Game">🔄 Reset</button>
+        </div>
+
+        <main class="game-area">
+            <div class="score-board">
+                <div class="score-card player">
+                    <span class="label">You</span>
+                    <span class="score" id="score">0</span>
+                </div>
+                <div class="score-divider">:</div>
+                <div class="score-card computer">
+                    <span class="label">Computer</span>
+                    <span class="score" id="cscore">0</span>
+                </div>
+            </div>
+
+            <h3 id="result" class="result-text">Make your move!</h3>
+
+            <div class="buttons">
+                <button onclick="game('Rock')" class="move-btn btn-rock" aria-label="Rock">
+                    <div class="icon">👊</div>
+                    <span>Rock</span>
+                </button>
+                <button onclick="game('Paper')" class="move-btn btn-paper" aria-label="Paper">
+                    <div class="icon">🖐️</div>
+                    <span>Paper</span>
+                </button>
+                <button onclick="game('Scissor')" class="move-btn btn-scissor" aria-label="Scissor">
+                    <div class="icon">✌️</div>
+                    <span>Scissor</span>
+                </button>
+            </div>
+            
+            <div class="history-container">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Your Move</th>
+                            <th>AI Move</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-body">
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="lifetime-stats">
+                <span title="Lifetime Wins">🏆 <span id="life-wins">0</span></span>
+                <span title="Lifetime Losses">💀 <span id="life-losses">0</span></span>
+                <span title="Lifetime Draws">🤝 <span id="life-draws">0</span></span>
+                <button class="btn-clear-stats" onclick="clearLifetimeStats()">Clear Data</button>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
