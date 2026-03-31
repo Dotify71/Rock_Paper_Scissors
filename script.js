@@ -5,18 +5,22 @@ let gs = {
     Paper: 'Rock',
 };
 
+// Current Session State
 let ps = 0;
 let cs = 0;
 let userHistory = []; 
 let isGameOver = false;
 
+// DOM Elements
 let r = document.getElementById('result');
 let s = document.getElementById('score');
 let css = document.getElementById('cscore');
 let historyBody = document.getElementById('history-body');
 
+// Lifetime State
 let lifetimeStats = JSON.parse(localStorage.getItem('rps-stats')) || { wins: 0, losses: 0, draws: 0 };
 
+// Initialize
 function init() {
     updateLifetimeDisplay();
 }
@@ -50,6 +54,7 @@ function getSmartMove() {
         return gr[Math.floor(Math.random() * gr.length)];
     }
     
+    // Hard Mode: Tally the last 5 moves to predict the next
     let recentMoves = userHistory.slice(-5);
     let counts = { Rock: 0, Paper: 0, Scissor: 0 };
     for (const move of recentMoves) { counts[move]++; }
@@ -63,10 +68,11 @@ function getSmartMove() {
         }
     }
     
-    if (predictedUserMove === 'Rock') return 'Paper';
-    if (predictedUserMove === 'Paper') return 'Scissor';
-    if (predictedUserMove === 'Scissor') return 'Rock';
-    return 'Rock';
+    // Pick the move that counters the user's predicted move
+    if (predictedUserMove === 'Rock') return 'Paper'; // Paper beats Rock
+    if (predictedUserMove === 'Paper') return 'Scissor'; // Scissor beats Paper
+    if (predictedUserMove === 'Scissor') return 'Rock'; // Rock beats Scissor
+    return 'Rock'; // Fallback
 }
 
 function resetGame() {
@@ -83,11 +89,13 @@ function resetGame() {
     }
 }
 
-function fullReset() {
+function resetAll() {
     let seriesSelect = document.getElementById('series-mode');
     if (seriesSelect) seriesSelect.value = 'infinity';
-    let difficultySelect = document.getElementById('ai-difficulty');
-    if (difficultySelect) difficultySelect.value = 'normal';
+    
+    let aiSelect = document.getElementById('ai-difficulty');
+    if (aiSelect) aiSelect.value = 'normal';
+    
     resetGame();
 }
 
@@ -116,6 +124,7 @@ function fireConfetti(isGrandWin = false) {
             }));
         }, 250);
     } else {
+        // Small burst for single round win
         confetti({
             particleCount: 80,
             spread: 60,
@@ -135,6 +144,7 @@ function game(me) {
     
     let resultOutcome = '';
     
+    // Reset animation classes
     r.className = 'result-text';
     void r.offsetWidth; 
     
@@ -161,6 +171,7 @@ function game(me) {
     
     saveLifetimeStats();
     
+    // Animate score change
     s.innerText = ps;
     css.innerText = cs;
     s.style.transform = 'scale(1.2)';
@@ -172,6 +183,7 @@ function game(me) {
         css.style.transition = 'transform 0.2s';
     }, 150);
     
+    // Update history table
     if(historyBody) {
         let tr = document.createElement('tr');
         tr.style.opacity = '0';
@@ -203,6 +215,7 @@ function game(me) {
         }, 10);
     }
 
+    // Check for Series Completion
     let seriesSelect = document.getElementById('series-mode');
     let seriesMode = seriesSelect ? seriesSelect.value : 'infinity';
     
@@ -211,7 +224,7 @@ function game(me) {
         if (ps >= targetScore) {
             isGameOver = true;
             r.innerText = "🏆 YOU WON THE SERIES! 🏆";
-            r.classList.remove('result-win');
+            r.classList.remove('result-win'); // clear previous
             r.classList.add('result-win'); 
             r.style.transform = 'scale(1.15)';
             fireConfetti(true);
@@ -238,4 +251,5 @@ function getEmoji(move) {
     return '';
 }
 
+// Start
 document.addEventListener('DOMContentLoaded', init);
