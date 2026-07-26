@@ -253,3 +253,11 @@ function getEmoji(move) {
 
 // Start
 document.addEventListener('DOMContentLoaded', init);
+
+// Keyboard Support
+document.addEventListener('keydown', (e) => {
+    let key = e.key.toLowerCase();
+    if (key === 'r') game('Rock');
+    if (key === 'p') game('Paper');
+    if (key === 's') game('Scissor');
+});
