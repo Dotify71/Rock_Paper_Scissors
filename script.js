@@ -220,7 +220,7 @@ function game(me) {
     let seriesMode = seriesSelect ? seriesSelect.value : 'infinity';
     
     if (seriesMode !== 'infinity') {
-        let targetScore = parseInt(seriesMode) === 3 ? 2 : 3;
+        let targetScore = Math.ceil(parseInt(seriesMode) / 2);
         if (ps >= targetScore) {
             isGameOver = true;
             r.innerText = "🏆 YOU WON THE SERIES! 🏆";
