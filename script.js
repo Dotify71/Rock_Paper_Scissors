@@ -153,6 +153,7 @@ function game(me) {
         r.innerText = "It's a Draw!";
         r.classList.add('result-draw');
         lifetimeStats.draws++;
+        playSound('draw');
     }
     else if (gs[me] === comp){
         resultOutcome = 'Win';
@@ -160,6 +161,7 @@ function game(me) {
         r.classList.add('result-win');
         ps++;
         lifetimeStats.wins++;
+        playSound('win');
     }
     else {
         resultOutcome = 'Lose';
@@ -167,6 +169,7 @@ function game(me) {
         r.classList.add('result-lose');
         cs++;
         lifetimeStats.losses++;
+        playSound('lose');
     }
     
     saveLifetimeStats();
@@ -241,6 +244,44 @@ function game(me) {
         if (resultOutcome === 'Win') {
             fireConfetti(false);
         }
+    }
+}
+
+// Sound Effects
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playSound(type) {
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    if (type === 'win') {
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+        oscillator.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+        oscillator.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2);
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.5);
+    } else if (type === 'lose') {
+        oscillator.type = 'sawtooth';
+        oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.5);
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.5);
+    } else if (type === 'draw') {
+        oscillator.type = 'square';
+        oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.3);
     }
 }
 
