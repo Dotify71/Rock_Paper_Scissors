@@ -30,6 +30,7 @@ let lifetimeStats = JSON.parse(localStorage.getItem('rps-stats')) || { wins: 0, 
 
 // Initialize
 function init() {
+    console.log("Rock Paper Scissors loaded successfully!");
     updateLifetimeDisplay();
 }
 
@@ -111,7 +112,8 @@ function fireConfetti(isGrandWin = false) {
     if (typeof confetti === 'undefined') return;
     
     if (isGrandWin) {
-        var duration = 3 * 1000;
+        const CONFETTI_DURATION_MS = 3000;
+        var duration = CONFETTI_DURATION_MS;
         var animationEnd = Date.now() + duration;
         var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
