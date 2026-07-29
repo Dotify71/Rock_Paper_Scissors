@@ -10,6 +10,14 @@ let ps = 0;
 let cs = 0;
 let userHistory = []; 
 let isGameOver = false;
+let isMuted = false;
+
+function toggleMute() {
+    let muteCb = document.getElementById('mute-sound');
+    if (muteCb) {
+        isMuted = muteCb.checked;
+    }
+}
 
 // DOM Elements
 let r = document.getElementById('result');
@@ -250,6 +258,7 @@ function game(me) {
 // Sound Effects
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playSound(type) {
+    if (isMuted) return;
     if (audioCtx.state === 'suspended') {
         audioCtx.resume();
     }

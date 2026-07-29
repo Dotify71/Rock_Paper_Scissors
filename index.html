@@ -34,6 +34,10 @@
                     <option value="hard">Hard (Smart AI)</option>
                 </select>
             </div>
+            <div class="setting-group" style="display: flex; align-items: center; gap: 5px;">
+                <label for="mute-sound">Mute:</label>
+                <input type="checkbox" id="mute-sound" onchange="toggleMute()" style="width:16px; height:16px; accent-color:#00e5ff;">
+            </div>
             <button class="btn-reset" onclick="resetAll()" aria-label="Reset Game">🔄 Reset</button>
         </div>
 
