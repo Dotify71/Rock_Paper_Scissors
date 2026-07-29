@@ -295,10 +295,12 @@ function playSound(type) {
 }
 
 function getEmoji(move) {
-    if (move === 'Rock') return '👊';
-    if (move === 'Paper') return '🖐️';
-    if (move === 'Scissor') return '✌️';
-    return '';
+    const emojis = {
+        'Rock': '👊',
+        'Paper': '🖐️',
+        'Scissor': '✌️'
+    };
+    return emojis[move] || '';
 }
 
 // Start
